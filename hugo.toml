@@ -1,4 +1,64 @@
-baseURL = 'https://example.org/'
-languageCode = 'en-us'
-title = 'My New Hugo Site'
-theme = hugo-theme-stack
+baseURL = "https://lustrous.ink"
+languageCode = "en-us"
+title = "Ghjattu's Notes"
+theme = "hugo-theme-stack"
+DefaultContentLanguage = "en"
+hasCJKLanguage = false
+
+[params]
+description = "This is description"
+mainSections = ["posts"]
+featuredImageField = "image"
+rssFullContent = true
+favicon = "/favicon.ico"
+
+[params.footer]
+since = 2025
+customText = "Thanks for stopping by."
+
+[params.dateFormat]
+published = "Jan 02, 2006"
+lastUpdated = "Jan 02, 2006 15:04 MST"
+
+[params.sidebar]
+compact = false
+emoji = "😄"
+subtitle = "Just notes from a wandering mind."
+[params.sidebar.avatar]
+enabled = true
+local = true
+src = "img/avatar.jpg"
+
+[params.article]
+math = true
+toc = true
+readingTime = true
+
+[params.article.license]
+enabled = true
+default = "Licensed under CC BY-NC-SA 4.0"
+
+[params.comments]
+enabled = false
+
+# [[params.widgets.homepage]]
+# type = "archives"
+# [[params.widgets.homepage]]
+# type = "search"
+[[params.widgets.homepage]]
+type = "categories"
+[params.widgets.homepage.params]
+limit = 10
+[[params.widgets.homepage]]
+type = "tag-cloud"
+[params.widgets.homepage.params]
+limit = 10
+[[params.widgets.page]]
+type = "toc"
+
+[params.colorScheme]
+toggle = true
+default = "auto"
+
+[menu]
+main = []
