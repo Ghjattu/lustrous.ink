@@ -22,7 +22,7 @@ lastUpdated = "January 02, 2006 15:04"
 
 [params.sidebar]
 compact = false
-emoji = "😄"
+emoji = "🎉"
 subtitle = "Just notes from a wandering mind."
 [params.sidebar.avatar]
 enabled = true
