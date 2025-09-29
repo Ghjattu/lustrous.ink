@@ -1,7 +1,13 @@
 +++
-date = '2025-09-27T00:25:11+08:00'
+date = '2025-09-29T15:35:11+08:00'
+lastmod = '2025-09-29T15:35:11+08:00'
 draft = false
-title = 'Authentication'
+title = 'Authentication&Authorization(一): 基本概念'
+slug = 'authentication-and-authorization-basic-concepts'
+description = '个人学习Authentication&Authorization过程中的笔记，整理了部分基本概念，以及Basic Auth、Cookie Auth与Token Auth的介绍与对比'
+keywords = ["Authentication", "Authorization", "Cookie", "Cookie Auth", "Token Auth", "JSON Web Token", "JWT", "Basic Auth"]
+categories = ["Web安全", "学习笔记"]
+tags = ["Authentication", "Authorization", "Cookie", "JSON Web Token"]
 +++
 
 ## 基本概念
@@ -110,30 +116,30 @@ Cookie Based Authentication 通常指 Cookie 与 Session 结合使用的认证�
 - 在前后端不同源的应用中配置较复杂：因为客户端默认不会跨域携带 Cookie，必须通过设置 `Access-Control-Allow-Credentials` 和 `withCredentials` 来实现，增加了配置复杂性；如果设置 `SameSite=None`，又会增加 CSRF 攻击的风险，需要额外的防护措施
 
 ## Token Authentication
-Token Authentication 是一种基于令牌 Token 的认证方式：用户登录成功后，服务端会签发一个 Token 并返回给客户端，后续客户端在请求中携带该 Token（通常放在请求头的 `Authorization` 字段中，结合 `Bearer` 前缀），服务端验证 Token 来识别用户身份。
+Token Authentication 是一种基于令牌(Token)的认证方式：用户登录成功后，服务端会签发一个 Token 返回给客户端，后续客户端在请求中携带该 Token（通常放在请求头的 `Authorization` 字段中，并加上 `Bearer` 前缀），服务端验证 Token 来识别用户身份。
 
 ### Token 的存储位置
-这里指的是 Token 在**浏览器端**的存储位置，常见的有以下几种：
+这里指的是 Token 在**浏览器端**的存储位置，常见的有：
 1. 内存：
-   - 特点：存储在应用运行时的内存变量中（如 React 的 `state` 等），安全性最高
-   - 缺点：页面刷新或关闭后 Token 会丢失；无法跨标签页共享
+   - 特点：存储在应用运行时的内存变量中（如 React 的 `state` ），安全性最高
+   - 缺点：刷新或关闭页面后丢失，且无法在不同标签页中共享
 2. Cookie：
-   - 特点：在特定请求中自动携带，可以设置 `HttpOnly` 属性避免 XSS 攻击
-   - 缺点：容易受到 CSRF 攻击，需要配合 `SameSite` 属性或其他机制防范；另外可能需要处理跨域携带的问题
+   - 特点：在特定请求中自动携带，并可以设置 `HttpOnly` 属性防止 XSS 攻击
+   - 缺点：容易受到 CSRF 攻击，需要结合 `SameSite` 属性或其他机制防范；另外可能需要处理跨域携带的问题
 3. localStorage：
-   - 特点：存储容量大、存储时间长；JS 可读写；没有 CSRF 风险
+   - 特点：存储容量大、存储时间长；JS 可读写，且跨标签页共享；没有 CSRF 风险
    - 缺点：存在 XSS 风险
 4. sessionStorage：
 	- 特点：存储容量大、仅在当前标签页有效；JS 可读写；没有 CSRF 风险
-	- 缺点：存在 XSS 风险；无法跨标签页共享
+	- 缺点：存在 XSS 风险；关闭页面后丢失
 
 ## JSON Web Token
-JSON Web Token(JWT) 是一个轻量级的认证标准，该标准允许前后端使用一个 JSON 形式的 Token 传递信息，JWT 包含了一些声明和验证所需要的信息，通常在用户身份验证通过后签发。
+JSON Web Token(JWT) 是一种轻量级的认证标准，该标准允许前后端使用一个 JSON 形式的 Token 传递信息，JWT 包含了一些声明和验证所需要的信息，通常在用户身份验证通过后签发。
 
 ### JWT 的结构
 JWT 由三部分组成，分别是 Header、Payload 和 Signature，中间用 `.` 分隔：
 - Header：描述 JWT 的元数据，包括：
-  - `typ`：Token 类型，一般为定值 "JWT"
+  - `typ`：Token 类型，一般为定值 `JWT`
   - `alg`：数字签名的算法，包括 HS256(HMAC with SHA-256, 对称加密)和 RS256(RSA with SHA-256, 非对称加密)等
 - Payload：存放实际传递的信息，称为声明(Claims)，包括：
   - 预定义的声明(Registered Claims)：如 `iss`(签发者)、`sub`(主题)、`exp`(绝对过期时间)、`iat`(签发时间)、`jti`(JWT Id)等
@@ -171,3 +177,19 @@ Signature 的生成与验证流程会因为签名算法的不同而有所区别�
 <!-- ### JSON Web Key Set -->
 
 <!-- ### 加密的 JWT -->
+
+### JWT 优缺点
+优点：
+- 适用于分布式系统
+- Token 自身包含了验证所需要的全部信息，以及其他应用需要的数据
+
+缺点：
+- Token 在过期之前始终有效，除非额外实现黑名单
+- Payload 过大时会增加带宽消耗
+- 服务端不存储状态，因此难以主动向在线用户推送消息
+
+### JWT 最佳实践
+- 始终通过 HTTPS 传输，且避免在 Payload 中存储敏感信息
+- 设置较短的 Token 有效期，并配合 Refresh Token 使用
+- 验证 Token 时不仅要校验 Signature，还要检查 Payload 中 `exp` 等声明是否合法
+- 利用 `jti` 声明在服务端实现黑名单，及时吊销存在风险的 Token
