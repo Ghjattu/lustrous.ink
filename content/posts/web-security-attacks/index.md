@@ -1,13 +1,13 @@
 +++
-date = '2025-09-30T21:39:21+08:00'
-lastmod = '2025-09-30T21:39:21+08:00'
+date = '2025-09-30T23:28:12+08:00'
+lastmod = '2025-09-30T23:28:12+08:00'
 draft = false
 title = 'Web Security学习笔记(二): 常见Web攻击方式'
 slug = 'web-security-attacks'
 description = '个人学习Web Security过程中的笔记，介绍常见的Web攻击方式，包括SQL注入、XSS、CSRF的攻击原理与防范措施'
 keywords = ['Web Security', 'SQL 注入', 'SQL Injection', 'XSS', '跨站脚本', 'CSRF', '跨站请求伪造', 'Web 攻击防护', '网络安全']
 categories = ['Web Security', '学习笔记']
-tags = ['Security', 'SQL Injection', 'XSS', 'CSRF']
+tags = ['Security', 'SQL Injection', 'XSS', 'CSRF', 'Cookie']
 +++
 
 ## SQL Injection(SQL 注入)
