@@ -62,3 +62,8 @@ default = "auto"
 
 [menu]
 main = []
+
+# fix: codebox background color is incorrect in light mode
+# See https://github.com/CaiJimmy/hugo-theme-stack/issues/695
+[markup.highlight]
+noClasses = false
