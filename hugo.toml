@@ -62,3 +62,16 @@ default = "auto"
 
 [menu]
 main = []
+
+[markup]
+[markup.highlight]
+codeFences = true
+lineNoStart = 1
+lineNos = true
+lineNumbersInTable = true
+# fix: codebox background color is incorrect in light mode
+# See https://github.com/CaiJimmy/hugo-theme-stack/issues/695
+noClasses = false
+[markup.tableOfContents]
+endLevel = 3
+ordered = false
